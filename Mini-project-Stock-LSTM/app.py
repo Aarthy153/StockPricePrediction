@@ -3,15 +3,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pandas_datareader as data
 from keras.models import load_model
+import yfinance as df #importing the dataset
+from pandas_datareader import data as pdr 
 import streamlit as st
 
-start = '2010-01-01'
-end = '2023-05-10'
+
 
 st.title('Stock Prediction using LSTM')
 
-user_input = st.text_input('Enter Stock Ticker', 'AAPL')
-df= data.DataReader(user_input, 'yahoo', start, end)
+user_input = st.text_input('Enter Stock Ticker', 'PG')
+
+df.pdr_override()
+
+df = pdr.get_data_yahoo(user_input, start='2010-1-1')
 
 # describing data
 st.subheader('Data from 2010 - 2023')
@@ -32,7 +36,7 @@ plt.plot(ma100)
 plt.plot(df.Close)
 st.pyplot(fig)
 
-st.subheader('Closing Price vs Time chart with 100MA')
+st.subheader('Closing Price vs Time chart with 200MA')
 ma100 = df.Close.rolling(100).mean()
 ma200 = df.Close.rolling(200).mean()
 fig = plt.figure(figsize = (12,6))
@@ -77,7 +81,7 @@ for i in range(100,input_data.shape[0]):
 x_test,y_test = np.array(x_test),np.array(y_test)
 y_predicted = model.predict(x_test)
 
-scaler.scale_
+scaler = scaler.scale_
 
 scale_factor = 1/scaler[0]
 y_predicted = y_predicted*scale_factor
